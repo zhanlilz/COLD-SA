@@ -144,10 +144,12 @@ n_times = 3;
 num_fc = 0;
 % number of days per year
 num_yrs = 365.25;
+
 % Band for multitemporal cloud/snow detection (Green)
 num_B1 = 2;
 % Band for multitemporal shadow/snow shadow detection (SWIR)
-num_B2 = 5;
+% num_B2 = 5;
+
 % Threshold for cloud, shadow, and snow detection.
 T_const = 4.42;
 % minimum year for model intialization
@@ -454,8 +456,8 @@ for i_ids = 1:ncols
                         continue
                     end
                     % Tmask: noise removal (good => 0 & noise => 1)
-                    blIDs = autoTmask(clrx(i_start:i+conse),clry(i_start:i+conse,[num_B1,num_B2]),...
-                        (clrx(i+conse)-clrx(i_start))/num_yrs,adj_rmse(num_B1),adj_rmse(num_B2),T_const);
+                    blIDs = autoTmaskGreen(clrx(i_start:i+conse),clry(i_start:i+conse,num_B1),...
+                        (clrx(i+conse)-clrx(i_start))/num_yrs,adj_rmse(num_B1),T_const);
                     
                     % IDs to be removed
                     IDs = i_start:i+conse;
@@ -900,8 +902,8 @@ for i_ids = 1:ncols
             
             % Tmask
             if length(clrx(i_start:end)) > conse
-                blIDs = autoTmask(clrx(i_start:end),clry(i_start:end,[num_B1,num_B2]),...
-                    (clrx(end)-clrx(i_start))/num_yrs,adj_rmse(num_B1),adj_rmse(num_B2),T_const);
+                blIDs = autoTmask(clrx(i_start:end),clry(i_start:end,num_B1),...
+                    (clrx(end)-clrx(i_start))/num_yrs,adj_rmse(num_B1),T_const);
                 
                 % update i_span after noise removal
                 i_span = sum(~blIDs); %#ok<NASGU>
