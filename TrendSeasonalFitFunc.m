@@ -195,7 +195,7 @@ for i_ids = 1:ncols
     % get default conse & T_cg
     conse = def_conse;
     T_cg = def_T_cg;
-    % mask data
+    % mask data in the nbands-th band for the i_ids-th column
     line_m = line_t(:,nbands*i_ids);
     
     %     % Only run CCDC for places where more than 50% of images has data
@@ -206,17 +206,15 @@ for i_ids = 1:ncols
     %     end
     
     % convert Kelvin to Celsius
-    line_t(:,nbands*(i_ids-1)+7) = 10*(line_t(:,nbands*(i_ids-1)+7) - 2732);
+    % line_t(:,nbands*(i_ids-1)+7) = 10*(line_t(:,nbands*(i_ids-1)+7) - 2732);
     
     % clear pixel should have reflectance between 0 and 1
     % brightness temperature should between -93.2 to 70.7 celsius degree
-    idrange = line_t(:,nbands*(i_ids-1)+1)>0&line_t(:,nbands*(i_ids-1)+1)<10000&...
-        line_t(:,nbands*(i_ids-1)+2)>0&line_t(:,nbands*(i_ids-1)+2)<10000&...
-        line_t(:,nbands*(i_ids-1)+3)>0&line_t(:,nbands*(i_ids-1)+3)<10000&...
-        line_t(:,nbands*(i_ids-1)+4)>0&line_t(:,nbands*(i_ids-1)+4)<10000&...
-        line_t(:,nbands*(i_ids-1)+5)>0&line_t(:,nbands*(i_ids-1)+5)<10000&...
-        line_t(:,nbands*(i_ids-1)+6)>0&line_t(:,nbands*(i_ids-1)+6)<10000&...
-        line_t(:,nbands*(i_ids-1)+7)>-9320&line_t(:,nbands*(i_ids-1)+7)<7070;
+    idrange = line_t(:,nbands*(i_ids-1)+1)>0&line_t(:,nbands*(i_ids-1)+1)<10000;
+    for iband = 2:nbands-1
+        idrange = idrange&line_t(:,nbands*(i_ids-1)+iband)>0&line_t(:,nbands*(i_ids-1)+iband)<10000;
+    end
+%        line_t(:,nbands*(i_ids-1)+7)>-9320&line_t(:,nbands*(i_ids-1)+7)<7070;
     
     % # of clear observatons
     idclr = line_m < 2;
