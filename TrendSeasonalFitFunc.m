@@ -900,7 +900,7 @@ for i_ids = 1:ncols
             
             % Tmask
             if length(clrx(i_start:end)) > conse
-                blIDs = autoTmask(clrx(i_start:end),clry(i_start:end,num_B1),...
+                blIDs = autoTmaskGreen(clrx(i_start:end),clry(i_start:end,num_B1),...
                     (clrx(end)-clrx(i_start))/num_yrs,adj_rmse(num_B1),T_const);
                 
                 % update i_span after noise removal
