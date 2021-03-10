@@ -267,7 +267,7 @@ for i_ids = 1:ncols
                 qa = 50;
                 
                 for i_B=1:nbands-1
-                    if i_B ~= nbands-1 % treat saturated and unsaturated pixels differently
+                    if i_B ~= nbands % -1 % treat saturated and unsaturated pixels differently
                         idgood = clry(:,i_B) < 10000; % saturate if ref > 1 or NBR NDVR > 1
                         i_span = sum(idgood);
                         if i_span < min_num_c*n_times % fill value for frequently saturated snow pixels
@@ -275,9 +275,9 @@ for i_ids = 1:ncols
                         else % fit for enough unsaturat snow pixels
                             [fit_cft(:,i_B),rmse(i_B)]=autoTSFit(clrx(idgood),clry(idgood,i_B),min_num_c);
                         end
-                    else % fit for temperature band
-                        idgood = clry(:,i_B)>-9320&clry(:,i_B)<7070;
-                        [fit_cft(:,i_B),rmse(i_B)]=autoTSFit(clrx(idgood),clry(idgood,i_B),min_num_c);
+%                     else % fit for temperature band
+%                         idgood = clry(:,i_B)>-9320&clry(:,i_B)<7070;
+%                         [fit_cft(:,i_B),rmse(i_B)]=autoTSFit(clrx(idgood),clry(idgood,i_B),min_num_c);
                     end
                 end
                 
